@@ -1,8 +1,8 @@
 package com.example.su.waterquality.interfaces;
 
-import com.example.su.waterquality.beans.HttpGetRes;
-import com.example.su.waterquality.beans.HttpPostRes;
-import com.example.su.waterquality.beans.WaterData;
+import com.example.su.waterquality.models.HttpGetRes;
+import com.example.su.waterquality.models.HttpPostRes;
+import com.example.su.waterquality.models.WaterData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

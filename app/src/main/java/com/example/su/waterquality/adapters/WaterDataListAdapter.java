@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.su.waterquality.R;
-import com.example.su.waterquality.beans.WaterData;
+import com.example.su.waterquality.models.WaterData;
 
 import java.util.Collection;
 import java.util.List;

@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bt_login:
-                Intent toMainMenuActivity=new Intent(this,MainMenuActivity.class);
+                Intent toMainMenuActivity=new Intent(this,MainActivity.class);
                 startActivity(toMainMenuActivity);
         }
     }

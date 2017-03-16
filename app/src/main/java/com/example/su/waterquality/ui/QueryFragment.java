@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.example.su.waterquality.R;
 import com.example.su.waterquality.adapters.WaterDataListAdapter;
-import com.example.su.waterquality.beans.HttpGetRes;
-import com.example.su.waterquality.beans.WaterData;
+import com.example.su.waterquality.models.HttpGetRes;
+import com.example.su.waterquality.models.WaterData;
 import com.example.su.waterquality.interfaces.WaterQualityService;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.su.waterquality.beans;
+package com.example.su.waterquality.models;
 
 import com.google.gson.annotations.SerializedName;
 

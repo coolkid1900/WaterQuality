@@ -28,8 +28,8 @@ import android.widget.Toast;
 
 import com.example.su.waterquality.R;
 import com.example.su.waterquality.adapters.BTDeviceListAdapter;
-import com.example.su.waterquality.beans.HttpPostRes;
-import com.example.su.waterquality.beans.WaterData;
+import com.example.su.waterquality.models.HttpPostRes;
+import com.example.su.waterquality.models.WaterData;
 import com.example.su.waterquality.interfaces.WaterQualityService;
 import com.example.su.waterquality.services.BluetoothConnect;
 import com.example.su.waterquality.utils.Constants;
