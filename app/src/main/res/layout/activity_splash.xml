@@ -2,15 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary" >
+    android:background="@mipmap/splash" >
 
     <TextView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="96dp"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="移动水质检测终端"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+        android:text="@string/app_name"
+        android:textColor="#FFF"
+        android:textSize="32sp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>
