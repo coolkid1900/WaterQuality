@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<MenuItems> mDatas;
     private MenuItemAdapter mAdapter;
 
+    public static final int UPLOAD=1;
+    public static final int QUERY=2;
+    public static final int SETTING=3;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +49,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_collect) {
-
+            Intent uploadintent=new Intent(this,WaterQualityActivity.class);
+            uploadintent.putExtra("type",UPLOAD);
+            startActivity(uploadintent);
         } else if (id == R.id.nav_query) {
-
+            Intent queryintent=new Intent(this,WaterQualityActivity.class);
+            queryintent.putExtra("type",QUERY);
+            startActivity(queryintent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_setting) {
-
+            Intent settingintent=new Intent(this,WaterQualityActivity.class);
+            settingintent.putExtra("type",SETTING);
+            startActivity(settingintent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -93,11 +103,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (i){
             case 0:
                 Intent uploadintent=new Intent(this,WaterQualityActivity.class);
+                uploadintent.putExtra("type",UPLOAD);
                 startActivity(uploadintent);
                 break;
             case 1:
+                Intent queryintent=new Intent(this,WaterQualityActivity.class);
+                queryintent.putExtra("type",QUERY);
+                startActivity(queryintent);
                 break;
             case 2:
+                Intent settingintent=new Intent(this,WaterQualityActivity.class);
+                settingintent.putExtra("type",SETTING);
+                startActivity(settingintent);
                 break;
         }
     }

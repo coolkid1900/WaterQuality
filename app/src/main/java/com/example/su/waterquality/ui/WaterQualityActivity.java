@@ -1,14 +1,13 @@
 package com.example.su.waterquality.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,32 +18,42 @@ import com.example.su.waterquality.R;
  */
 
 public class WaterQualityActivity extends AppCompatActivity{
+    private ActionBar actionbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
-        initFragment();
+        Intent intent=getIntent();
+        initFragment(intent.getIntExtra("type",0));
     }
 
     private void initViews() {
         setContentView(R.layout.activity_main);
+        actionbar=getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initFragment() {
+    private void initFragment(int type) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        CollectionFragment collectionFragment=new CollectionFragment();
-        fragmentTransaction.add(R.id.fragment_container,collectionFragment);
+        if (type==1){
+            CollectionFragment collectionFragment=new CollectionFragment();
+            fragmentTransaction.add(R.id.fragment_container,collectionFragment);
+            setTitle("水质信息上传");
+        }else if (type==2){
+            QueryFragment queryFragment=new QueryFragment();
+            fragmentTransaction.add(R.id.fragment_container,queryFragment);
+            setTitle("水质信息查询");
+        }else if (type==3){
+            setTitle("应用设置");
+        }
         fragmentTransaction.commit();
 
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment);
-        fragmentTransaction.commit();
+    private void setTitle(String title) {
+        actionbar.setTitle(title);
     }
 
     @Override
@@ -57,19 +66,11 @@ public class WaterQualityActivity extends AppCompatActivity{
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }else if (item.getItemId() == android.R.id.home){
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
