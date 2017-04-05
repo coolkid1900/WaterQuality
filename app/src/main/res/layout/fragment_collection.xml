@@ -17,12 +17,14 @@
         android:textSize="20sp"
         android:layout_margin="10sp"
         android:text="检测点:"/>
-    <EditText
+    <Spinner
         android:id="@+id/value_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
         android:layout_toRightOf="@+id/location"
-        android:text="东湖"/>
+        android:entries="@array/lakes_upload">
+    </Spinner>
     <TextView
         android:id="@+id/temp"
         android:layout_width="wrap_content"

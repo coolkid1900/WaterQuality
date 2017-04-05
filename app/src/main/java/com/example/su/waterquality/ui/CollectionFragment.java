@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.su.waterquality.R;
@@ -71,7 +72,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     private BluetoothConnect mBluetoothConnect = null;
     private String mConnectedDeviceName = null;
     private AlertDialog mAlertDialog;
-    private EditText et_location;
+    private Spinner et_location;
     private EditText et_Temp;
     private EditText et_NTU;
     private Button bt_stop;
@@ -145,7 +146,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     }
 
     private void initViews(View view) {
-        et_location= (EditText) view.findViewById(R.id.value_location);
+        et_location= (Spinner) view.findViewById(R.id.value_location);
         et_Temp= (EditText) view.findViewById(R.id.value_temp);
         et_NTU= (EditText) view.findViewById(R.id.value_ntu);
         bt_stop = (Button) view.findViewById(R.id.stop_collect);

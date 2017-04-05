@@ -15,6 +15,7 @@
         android:id="@+id/search">
         <Spinner
             android:id="@+id/spinner"
+            android:layout_margin="6sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/lakes">
