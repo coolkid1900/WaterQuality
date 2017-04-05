@@ -14,6 +14,12 @@ public class WaterData {
     @SerializedName("name")
     private String  name;
 
+    @SerializedName("longitude")
+    private Double longitude;
+
+    @SerializedName("latitude")
+    private Double  latitude;
+
     @SerializedName("date")
     private String date;
 
@@ -26,22 +32,16 @@ public class WaterData {
     @SerializedName("ph")
     private Double ph;
 
-    @SerializedName("nitrogen")
-    private Double nitrogen;
 
-    @SerializedName("phosphorus")
-    private Double  phosphorus;
-
-
-    public WaterData(Integer type, String name, String date, Double temperature, Double turbidity, Double ph, Double nitrogen, Double phosphorus) {
+    public WaterData(Integer type, String name, Double longitude, Double latitude,String date, Double temperature, Double turbidity, Double ph) {
         this.type = type;
         this.name = name;
+        this.longitude=longitude;
+        this.latitude=latitude;
         this.date = date;
         this.temperature = temperature;
         this.turbidity = turbidity;
         this.ph = ph;
-        this.nitrogen = nitrogen;
-        this.phosphorus = phosphorus;
     }
 
 
@@ -93,33 +93,33 @@ public class WaterData {
         this.ph = ph;
     }
 
-    public Double getNitrogen() {
-        return nitrogen;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setNitrogen(Double nitrogen) {
-        this.nitrogen = nitrogen;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
-    public Double getPhosphorus() {
-        return phosphorus;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setPhosphorus(Double phosphorus) {
-        this.phosphorus = phosphorus;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     @Override
     public String toString() {
         return "WaterData{" +
-                ", type=" + type +
+                "type=" + type +
                 ", name='" + name + '\'' +
-                ", date=" + date +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", date='" + date + '\'' +
                 ", temperature=" + temperature +
                 ", turbidity=" + turbidity +
                 ", ph=" + ph +
-                ", nitrogen=" + nitrogen +
-                ", phosphorus=" + phosphorus +
                 '}';
     }
 }

@@ -6,6 +6,7 @@
     android:id="@+id/content_collection"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="20dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.su.waterquality.ui.WaterQualityActivity">
 
@@ -21,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/location"
-        android:focusable="false"
         android:text="东湖"/>
     <TextView
         android:id="@+id/temp"
@@ -72,40 +72,6 @@
         android:layout_toRightOf="@+id/ntu"
         android:focusable="false"/>
 
-    <TextView
-        android:id="@+id/nitrogen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="氮含量:"
-        android:textSize="20sp"
-        android:layout_margin="10sp"
-        android:layout_below="@+id/ph"/>
-    <EditText
-        android:id="@+id/value_nitrogen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/value_ph"
-        android:layout_toEndOf="@+id/ph"
-        android:layout_toRightOf="@+id/ph"
-        android:focusable="false"/>
-
-    <TextView
-        android:id="@+id/phosphorus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="磷含量:"
-        android:textSize="20sp"
-        android:layout_margin="10sp"
-        android:layout_below="@+id/nitrogen"/>
-    <EditText
-        android:id="@+id/value_phosphorus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/value_nitrogen"
-        android:layout_toEndOf="@+id/nitrogen"
-        android:layout_toRightOf="@+id/nitrogen"
-        android:focusable="false"/>
-
     <Button
         android:id="@+id/stop_collect"
         android:layout_width="wrap_content"
@@ -120,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="100dp"
+        android:layout_marginRight="120dp"
         android:height="60dp"
         android:text="上传信息"/>
 

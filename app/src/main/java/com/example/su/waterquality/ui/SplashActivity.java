@@ -11,7 +11,6 @@ import com.example.su.waterquality.R;
 import java.util.concurrent.TimeUnit;
 
 public class SplashActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,10 +18,8 @@ public class SplashActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         new Thread(new Runnable() {
-
             @Override
             public void run() {
-
                 try {
                     TimeUnit.SECONDS.sleep(2);
                     Intent toLoginActivity = new Intent(SplashActivity.this,
@@ -32,9 +29,7 @@ public class SplashActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }).start();
-
     }
 }

@@ -8,6 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -70,18 +74,82 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     private Button bt_stop;
     private Button bt_upload;
     private FloatingActionButton fab;
-    private String temp;
-    private String ntu;
+    private Double temp;
+    private Double ntu;
+    private Double ph;
+    private Integer type;
+    private String name;
+    private Double latitude = 0.0;
+    private Double longitude = 0.0;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_collection,container,false);
+        View view = inflater.inflate(R.layout.fragment_collection, container, false);
         initBluetooth();
         initViews(view);
         initListeners();
+        initLocation();
         return view;
+    }
+
+    private void initLocation() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location != null){
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+        }else{
+            LocationListener locationListener = new LocationListener() {
+
+                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                // Provider被enable时触发此函数，比如GPS被打开
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                // Provider被disable时触发此函数，比如GPS被关闭
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+
+                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
+                @Override
+                public void onLocationChanged(Location location) {
+                    if (location != null) {
+                        Log.e("Map", "Location changed : Lat: "
+                                + location.getLatitude() + " Lng: "
+                                + location.getLongitude());
+                    }
+                }
+            };
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location != null){
+                latitude = location.getLatitude(); //经度
+                longitude = location.getLongitude(); //纬度
+            }
+        }
     }
 
     private void initViews(View view) {
@@ -170,7 +238,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
         Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         String data_str=sdf.format(date);
-        WaterData waterdata=new WaterData(1,"东湖",data_str,Double.valueOf(temp.trim()),Double.valueOf(ntu.trim()),null,null,null);
+        WaterData waterdata=new WaterData(type,name,longitude,latitude,data_str,temp,ntu,ph);
         Call<HttpPostRes> call = service.postWaterData(waterdata);
         call.enqueue(this);
     }
@@ -271,10 +339,10 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
                     Log.d(TAG, readMessage);
                     String[] data = readMessage.split("\r\n");
                     try {
-                        temp=data[data.length - 2];
-                        ntu=data[data.length - 1];
-                        et_Temp.setText(temp);
-                        et_NTU.setText(ntu);
+                        temp=Double.parseDouble(data[data.length - 2]);
+                        ntu=Double.parseDouble(data[data.length - 1]);
+                        et_Temp.setText(temp.toString());
+                        et_NTU.setText(ntu.toString());
                     } catch (ArrayIndexOutOfBoundsException e) {
 
                     }
@@ -350,4 +418,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     public void onFailure(Call<HttpPostRes> call, Throwable t) {
         Toast.makeText(getActivity(),"上传失败，请重试",Toast.LENGTH_SHORT).show();
     }
+
+
+
 }
