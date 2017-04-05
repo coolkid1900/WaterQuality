@@ -59,8 +59,6 @@ public class WaterDataListAdapter extends BaseAdapter{
         viewHolder.tv_temperature.setText(String.valueOf(waterData.getTemperature()));
         viewHolder.tv_turbidity.setText(String.valueOf(waterData.getTurbidity()));
         viewHolder.tv_ph.setText(String.valueOf(waterData.getPh()));
-        viewHolder.tv_nitrogen.setText(String.valueOf(waterData.getNitrogen()));
-        viewHolder.tv_phosphorus.setText(String.valueOf(waterData.getPhosphorus()));
         return convertView;
     }
 
@@ -84,8 +82,6 @@ public class WaterDataListAdapter extends BaseAdapter{
             tv_temperature= (TextView) convertView.findViewById(R.id.temperature);
             tv_turbidity= (TextView) convertView.findViewById(R.id.turbidity);
             tv_ph= (TextView) convertView.findViewById(R.id.ph);
-            tv_nitrogen= (TextView) convertView.findViewById(R.id.nitrogen);
-            tv_phosphorus= (TextView) convertView.findViewById(R.id.phosphorus);
         }
     }
 }

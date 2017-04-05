@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:text="温度" />
+        android:text="温度(℃)" />
 
     <TextView
         android:id="@+id/turbidity"
@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:text="浊度" />
+        android:text="浊度(NTU)" />
     <TextView
         android:id="@+id/ph"
         android:layout_width="0dp"
@@ -42,21 +42,5 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:text="PH值" />
-
-    <TextView
-        android:id="@+id/nitrogen"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:text="氮含量" />
-
-    <TextView
-        android:id="@+id/phosphorus"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:text="磷含量" />
 
 </LinearLayout>

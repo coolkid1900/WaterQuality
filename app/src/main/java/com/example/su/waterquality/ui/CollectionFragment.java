@@ -40,6 +40,7 @@ import com.example.su.waterquality.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,12 +55,14 @@ import static com.example.su.waterquality.ui.QueryFragment.HTTP_URL;
  * Created by su on 2017/1/12.
  */
 
-public class CollectionFragment extends Fragment implements View.OnClickListener, Callback<HttpPostRes> {
+public class CollectionFragment extends Fragment implements View.OnClickListener, Callback<HttpPostRes>,LocationListener {
 
     private static final int REQUEST_ENABLE_BT = 1;
 
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
     public static final String TAG = "MainActivity";
+    public static final int MIN_TIME_BW_UPDATES=3000;
+    public static final int MIN_DISTANCE_CHANGE_FOR_UPDATES=1;
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothDevice device = null;
@@ -81,6 +84,10 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     private String name;
     private Double latitude = 0.0;
     private Double longitude = 0.0;
+    private LocationManager locationManager;
+    private Location location;
+    private boolean isGPSEnabled;
+    private boolean isNetworkEnabled;
 
 
     @Nullable
@@ -94,62 +101,47 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    private void initLocation() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location != null){
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-            }
-        }else{
-            LocationListener locationListener = new LocationListener() {
-
-                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                // Provider被enable时触发此函数，比如GPS被打开
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                // Provider被disable时触发此函数，比如GPS被关闭
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-
-                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-                @Override
-                public void onLocationChanged(Location location) {
-                    if (location != null) {
-                        Log.e("Map", "Location changed : Lat: "
-                                + location.getLatitude() + " Lng: "
-                                + location.getLongitude());
+    public void initLocation() {
+        try {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                Toast.makeText(getActivity(),"不能定位，请检测网络或GPS连接",Toast.LENGTH_LONG).show();
+            } else {
+                if (isNetworkEnabled) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
+                    Log.d("Network", "Network Enabled");
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            getLocation(location);
+                        }
                     }
                 }
-            };
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if(location != null){
-                latitude = location.getLatitude(); //经度
-                longitude = location.getLongitude(); //纬度
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME_BW_UPDATES,MIN_DISTANCE_CHANGE_FOR_UPDATES,this);
+                        Log.d("GPS", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location != null) {
+                                getLocation(location);
+                            }
+                        }
+                    }
+                }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public void getLocation(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        Log.d(TAG,latitude+" "+longitude);
     }
 
     private void initViews(View view) {
@@ -380,8 +372,13 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
         if (mBluetoothConnect != null) {
             mBluetoothConnect.stop();
+        }
+        if(locationManager!=null){
+            //移除监听器
+            locationManager.removeUpdates(this);
         }
     }
 
@@ -420,5 +417,23 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        getLocation(location);
+    }
 
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }
