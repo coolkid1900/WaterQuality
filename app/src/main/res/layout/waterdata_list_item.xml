@@ -8,39 +8,44 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center_horizontal"
-        android:text="湖泊" />
+        android:textSize="16sp"
+        android:padding="4dp"/>
 
     <TextView
         android:id="@+id/date"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:gravity="center_horizontal"
-        android:text="日期" />
+        android:textSize="16sp"
+        android:padding="4dp"/>
 
     <TextView
         android:id="@+id/temperature"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center_horizontal"
-        android:text="温度(℃)" />
+        android:textSize="16sp"
+        android:padding="4dp"/>
 
     <TextView
         android:id="@+id/turbidity"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center_horizontal"
-        android:text="浊度(NTU)" />
+        android:textSize="16sp"
+        android:padding="4dp"/>
     <TextView
         android:id="@+id/ph"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center_horizontal"
-        android:text="PH值" />
+        android:textSize="16sp"
+        android:padding="4dp"/>
 
 </LinearLayout>

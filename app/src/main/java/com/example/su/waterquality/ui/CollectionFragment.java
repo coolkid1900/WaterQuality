@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,15 +32,16 @@ import android.widget.Toast;
 
 import com.example.su.waterquality.R;
 import com.example.su.waterquality.adapters.BTDeviceListAdapter;
+import com.example.su.waterquality.interfaces.WaterQualityService;
 import com.example.su.waterquality.models.HttpPostRes;
 import com.example.su.waterquality.models.WaterData;
-import com.example.su.waterquality.interfaces.WaterQualityService;
 import com.example.su.waterquality.services.BluetoothConnect;
 import com.example.su.waterquality.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,6 +75,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     private Spinner et_location;
     private EditText et_Temp;
     private EditText et_NTU;
+    private EditText et_ph;
     private Button bt_stop;
     private Button bt_upload;
     private FloatingActionButton fab;
@@ -89,6 +90,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
     private Location location;
     private boolean isGPSEnabled;
     private boolean isNetworkEnabled;
+    private HashMap<String,String> datamap;
 
 
     @Nullable
@@ -149,6 +151,7 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
         et_location= (Spinner) view.findViewById(R.id.value_location);
         et_Temp= (EditText) view.findViewById(R.id.value_temp);
         et_NTU= (EditText) view.findViewById(R.id.value_ntu);
+        et_ph= (EditText) view.findViewById(R.id.value_ph);
         bt_stop = (Button) view.findViewById(R.id.stop_collect);
         bt_upload = (Button) view.findViewById(R.id.upload_info);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -231,7 +234,8 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
         Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         String data_str=sdf.format(date);
-        WaterData waterdata=new WaterData(type,name,longitude,latitude,data_str,temp,ntu,ph);
+        name=et_location.getSelectedItem().toString();
+        WaterData waterdata=new WaterData(1,name,longitude,latitude,data_str,temp,ntu,ph);
         Call<HttpPostRes> call = service.postWaterData(waterdata);
         call.enqueue(this);
     }
@@ -330,15 +334,41 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     Log.d(TAG, readMessage);
-                    String[] data = readMessage.split("\r\n");
-                    try {
-                        temp=Double.parseDouble(data[data.length - 2]);
-                        ntu=Double.parseDouble(data[data.length - 1]);
-                        et_Temp.setText(temp.toString());
-                        et_NTU.setText(ntu.toString());
-                    } catch (ArrayIndexOutOfBoundsException e) {
+                    Scanner scanner=new Scanner(readMessage);
+                    datamap=new HashMap<>();
+                    while(scanner.hasNext()) {
+                        String line=scanner.nextLine();
+                        try {
+                            if (line.contains("temp")){
+                                String[] data=line.split(":");
+                                datamap.put("temp",data[1]);
+                            }else if (line.contains("ntu")){
+                                String[] data=line.split(":");
+                                datamap.put("ntu",data[1]);
+                            }else if (line.contains("pH")){
+                                String[] data=line.split(":");
+                                datamap.put("pH",data[1]);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
 
                     }
+                    et_Temp.setText(datamap.get("temp"));
+                    et_NTU.setText(datamap.get("ntu"));
+                    et_ph.setText(datamap.get("pH"));
+//                    String[] data = readMessage.split("\r\n");
+//                    try {
+//                        temp=Double.parseDouble(data[data.length - 3]);
+//                        ntu=Double.parseDouble(data[data.length - 2]);
+//                        ph=Double.parseDouble(data[data.length - 1]);
+//                        et_Temp.setText(temp.toString());
+//                        et_NTU.setText(ntu.toString());
+//                        et_ph.setText(ph.toString());
+//                    } catch (ArrayIndexOutOfBoundsException e) {
+//
+//                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -350,9 +380,9 @@ public class CollectionFragment extends Fragment implements View.OnClickListener
                     break;
                 case Constants.MESSAGE_TOAST:
 
-                    Toast.makeText(getActivity(), msg.getData().getString(Constants.TOAST),
-                            Toast.LENGTH_SHORT).show();
-                    mBluetoothConnect.connect(device, true);
+//                    Toast.makeText(getActivity(), msg.getData().getString(Constants.TOAST),
+//                            Toast.LENGTH_SHORT).show();
+//                    mBluetoothConnect.connect(device, true);
                     break;
             }
         }

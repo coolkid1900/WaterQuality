@@ -477,7 +477,7 @@ public class BluetoothConnect {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-                    Thread.sleep(1000);
+                    Thread.sleep(900);
                     // Send the obtained bytes to the UI Activity
                     mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
                             .sendToTarget();
@@ -486,7 +486,7 @@ public class BluetoothConnect {
                     connectionLost();
 
                     // Start the service over to restart listening mode
-                    BluetoothConnect.this.start();
+//                    BluetoothConnect.this.start();
                     break;
                 } catch (InterruptedException e) {
                     e.printStackTrace();

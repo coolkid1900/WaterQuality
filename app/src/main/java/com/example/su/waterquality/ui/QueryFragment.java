@@ -36,7 +36,7 @@ public class QueryFragment extends Fragment implements View.OnClickListener, Cal
     private List<WaterData> mWaterDatas;
     private WaterDataListAdapter mWaterDataListAdapter;
 
-    public static final String HTTP_URL="http://115.156.178.105:8080";
+    public static final String HTTP_URL="http://115.156.178.108:8080";
 
     @Nullable
     @Override
